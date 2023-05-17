@@ -36,7 +36,22 @@ const char result[] = "~250F4600307600010F0CAA0CA40CAD0CAC0CAF0CAD0CA30CAC0CAD0C
 #define VOL_CELL_13		VOL_CELL_ALL + NUM_BYTE * 12
 #define VOL_CELL_14		VOL_CELL_ALL + NUM_BYTE * 13
 #define VOL_CELL_15		VOL_CELL_ALL + NUM_BYTE * 14
-
+#define NUM_TEM				79
+#define	TEM_ALL				81
+#define	TEM_1					TEM_ALL + NUM_BYTE * 00
+#define TEM_2					TEM_ALL + NUM_BYTE * 01
+#define TEM_3					TEM_ALL + NUM_BYTE * 02	
+#define TEM_4					TEM_ALL + NUM_BYTE * 03	
+#define TEM_5					TEM_ALL + NUM_BYTE * 04	
+#define TEM_6					TEM_ALL + NUM_BYTE * 05					
+#define	CURRENT				105
+#define TOT_VOL				109
+#define CAPACITY			113
+#define CUSTOM				117
+#define FULL_CAPACITY	119
+#define DIS_CYCLE			123
+#define DES_CAPACITY	127
+#define CHECKSUM			131
 
 
 
