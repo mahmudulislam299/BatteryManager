@@ -1,7 +1,7 @@
 #include "BatteryManager.h"
 #include "BatteryCommand.h"
 
-// byte query1TT[] = { 0x7E, 0x32, 0x35, 0x30, 0x31, 0x34, 0x36, 0x43, 0x32, 0x30, 0x30, 0x30, 0x30, 0x46, 0x44, 0x39, 0x39, 0x0D};
+
 // Constructor(s)
 BatteryManager::BatteryManager(Stream *port) 
 {
@@ -22,7 +22,7 @@ void BatteryManager::chargeBattery()
   {
     dataStream->flush();
     dataStream->write(query1[i]);
-//    Serial.print(query1[i], HEX);
+    // Serial.print(query1[i], HEX);
     Serial.print(query1[i]);
     Serial.print(" ");
   }

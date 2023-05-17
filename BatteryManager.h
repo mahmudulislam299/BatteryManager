@@ -12,15 +12,27 @@ class BatteryManager
     // Destructor
     ~BatteryManager();
 
-    // Member functions
-    void chargeBattery();
-    void dischargeBattery();
-    void getBatteryStatus();
-    // Add more member functions as needed
+    public:
+        // public Member functions
+        void chargeBattery();
+        void dischargeBattery();
+        void getBatteryStatus();
+
+
+        // Add more member functions as needed
+
+    public: 
+        // public Member variable
+
+    private:
+        // private memver functions
+
 
 	private:
-    // Member variables
-    // Add member variables as needed
+        // Member variables
+        // Add member variables as needed
 		Stream *dataStream;
+
+
 };
 #endif // BatteryManager_H
