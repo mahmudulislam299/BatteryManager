@@ -21,6 +21,7 @@ class BatteryManager
 
         // Add more member functions as needed
         void checkAllTheValue();
+        void getAllValueIntoSubarray();
 
     public: 
         // public Member variable
@@ -34,6 +35,7 @@ class BatteryManager
         // Add member variables as needed
 		Stream *dataStream;
         char* arrayPtr;
+        char output_arr_buf[10]; // handle subarray
 
 };
 #endif // BatteryManager_H

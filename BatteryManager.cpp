@@ -67,3 +67,36 @@ void BatteryManager::checkAllTheValue()
   postionCheckFunc(result,CHECKSUM ,NUM_BYTE_4);
 }
 
+void BatteryManager::getAllValueIntoSubarray()
+{
+  Serial.print("\nSOI: ");
+  extractSubarray(result,SOI,NUM_BYTE_1,output_arr_buf);
+  Serial.print(output_arr_buf);
+  Serial.print("\nVER: ");
+  extractSubarray(result,VER,NUM_BYTE_2,output_arr_buf);
+  Serial.print(output_arr_buf);
+  Serial.print("\nADR: ");
+  extractSubarray(result,ADR,NUM_BYTE_2,output_arr_buf);
+  Serial.print(output_arr_buf);
+  Serial.print("\nVol cell 1: ");
+  extractSubarray(result,VOL_CELL_01 ,NUM_BYTE_4,output_arr_buf);
+  Serial.print(output_arr_buf);
+  Serial.print("\ntemp 1: ");
+  extractSubarray(result,TEM_1 ,NUM_BYTE_4,output_arr_buf);
+  Serial.print(output_arr_buf);
+  Serial.print("\ncurrent: ");
+  extractSubarray(result,CURRENT ,NUM_BYTE_4,output_arr_buf);
+  Serial.print(output_arr_buf);
+  Serial.print("\nTOT_VOL: ");
+  extractSubarray(result,TOT_VOL ,NUM_BYTE_4,output_arr_buf);
+  Serial.print(output_arr_buf);
+  Serial.print("\nFULL_CAPACITY: ");
+  extractSubarray(result,FULL_CAPACITY ,NUM_BYTE_4,output_arr_buf);
+  Serial.print(output_arr_buf);
+  Serial.print("\nDES_CAPACITY: ");
+  extractSubarray(result,DES_CAPACITY ,NUM_BYTE_4,output_arr_buf);
+  Serial.print(output_arr_buf);
+  Serial.print("\nCHECKSUM: ");
+  extractSubarray(result,CHECKSUM ,NUM_BYTE_4,output_arr_buf);
+  Serial.print(output_arr_buf);
+}
