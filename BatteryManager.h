@@ -20,6 +20,7 @@ class BatteryManager
 
 
         // Add more member functions as needed
+        void checkAllTheValue();
 
     public: 
         // public Member variable
@@ -32,7 +33,7 @@ class BatteryManager
         // Member variables
         // Add member variables as needed
 		Stream *dataStream;
-
+        char* arrayPtr;
 
 };
 #endif // BatteryManager_H

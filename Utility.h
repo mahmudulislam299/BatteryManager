@@ -2,8 +2,6 @@
 #define UTILITY_h
 
 #include <Arduino.h>
-// #include "BatteryCommand.h"
-
 
 char postionCheckFunc(char *arr, int postion, int num_byte= 4);
 
