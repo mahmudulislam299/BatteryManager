@@ -34,7 +34,9 @@ class BatteryManager
          * @return The voltage of the specified cell, or -1 if the cell number is invalid or extraction fails.
          */
         float getCellVoltage(int8_t cellNumber);
+        
 
+        int8_t getNumberOfCell();
         
 
     public: 

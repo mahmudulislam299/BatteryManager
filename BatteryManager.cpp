@@ -143,6 +143,22 @@ void BatteryManager::getAllValueIntoSubarray()
 }
 
 
+int8_t BatteryManager::getNumberOfCell()
+{
+  char temp_buf[10];
+  
+  if (!extractSubarray(qryRestult, NUM_PACK, NUM_BYTE_2, temp_buf))
+  {
+    return -1; // Return -1 if extraction fails or invalid input
+  }
+  
+  int8_t num_of_cell = hexToDecimal(temp_buf);
+  Serial.print("number of cell: ");
+  Serial.println(num_of_cell);
+
+  return num_of_cell;
+}
+
 
 
 
