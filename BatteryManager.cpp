@@ -143,12 +143,43 @@ void BatteryManager::getAllValueIntoSubarray()
 }
 
 
-getCell1Voltage()
+
+
+
+/**
+ * getCellVoltage - Retrieves the voltage of a specific cell.
+ * 
+ * This function extracts the subarray from the query result array that represents the voltage
+ * of the specified cell. The extracted subarray is then converted to a decimal value using the 
+ * hexToDecimal function. The decimal value is returned as the voltage of the specified cell.
+ * 
+ * @param cellNumber The number of the cell to retrieve the voltage for.
+ * @return The voltage of the specified cell as a decimal value. Returns -1 if extraction fails or invalid input.
+ */
+int32_t BatteryManager::getCellVoltage(int8_t cellNumber)
 {
-    Serial.print("\nVol cell 1: ");
-  extractSubarray(qryRestult,VOL_CELL_01 ,NUM_BYTE_4,output_arr_buf);
-  Serial.print(output_arr_buf);
-  outputDigit = hexToDecimal(output_arr_buf);
-  Serial.print(" = ");
-  Serial.print(outputDigit);
+  if (cellNumber < 1 || cellNumber > 15)
+  {
+    return -1; // Return -1 for invalid cell number
+  }
+  
+  int startPos = VOL_CELL_ALL + ((cellNumber - 1) * NUM_BYTE_4);
+  char cell_vol_buf[10];
+  
+  // Extract the subarray representing the voltage of the specified cell
+  if (!extractSubarray(qryRestult, startPos, NUM_BYTE_4, cell_vol_buf))
+  {
+    return -1; // Return -1 if extraction fails or invalid input
+  }
+  
+  // Convert the extracted subarray to a decimal value
+  int32_t outputDigit = hexToDecimal(cell_vol_buf);
+  
+  // Print the decimal value for debugging purposes
+  Serial.print("Cell ");
+  Serial.print(cellNumber);
+  Serial.print(" Voltage = ");
+  Serial.println(outputDigit);
+
+  return outputDigit; // Return the voltage of the specified cell as a decimal value
 }

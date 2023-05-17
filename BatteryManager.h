@@ -22,6 +22,21 @@ class BatteryManager
         // Add more member functions as needed
         void checkAllTheValue();
         void getAllValueIntoSubarray();
+        
+
+        /**
+         * getCellVoltage - Retrieves the voltage of a specific cell.
+         * 
+         * This function extracts the subarray from the query result array that represents the voltage
+         * of the specified cell. The extracted subarray is then converted to a decimal value using the 
+         * hexToDecimal function. The decimal value is returned as the voltage of the specified cell.
+         * 
+         * @param cellNumber The number of the cell to retrieve the voltage for.
+         * @return The voltage of the specified cell as a decimal value. Returns -1 if extraction fails or invalid input.
+         */
+        int32_t getCellVoltage(int8_t cellNumber);
+
+        
 
     public: 
         // public Member variable
