@@ -25,16 +25,15 @@ class BatteryManager
         
 
         /**
-         * getCellVoltage - Retrieves the voltage of a specific cell.
+         * getCellVoltage - Retrieves the voltage of a specific cell in the battery pack.
          * 
-         * This function extracts the subarray from the query result array that represents the voltage
-         * of the specified cell. The extracted subarray is then converted to a decimal value using the 
-         * hexToDecimal function. The decimal value is returned as the voltage of the specified cell.
+         * This function takes the cell number as input and returns the voltage of the corresponding cell
+         * in the battery pack. The cell number should be within the range of 1 to 15.
          * 
-         * @param cellNumber The number of the cell to retrieve the voltage for.
-         * @return The voltage of the specified cell as a decimal value. Returns -1 if extraction fails or invalid input.
+         * @param cellNumber  The number of the cell to retrieve the voltage for.
+         * @return The voltage of the specified cell, or -1 if the cell number is invalid or extraction fails.
          */
-        int32_t getCellVoltage(int8_t cellNumber);
+        float getCellVoltage(int8_t cellNumber);
 
         
 
@@ -43,6 +42,18 @@ class BatteryManager
 
     private:
         // private memver functions
+        /**
+         * getActualVoltage - Converts the input voltage to actual voltage in float.
+         * 
+         * This function takes an input voltage as an integer value and converts it to
+         * the actual voltage in float by dividing it by the voltage factor. The voltage
+         * factor is used to scale the input voltage to the appropriate value.
+         * 
+         * @param input The input voltage as an integer value.
+         * @return The actual voltage in float.
+         */
+        float getActualVoltage(int32_t input);
+        
 
 
 	private:
