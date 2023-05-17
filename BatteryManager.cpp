@@ -8,7 +8,7 @@ BatteryManager::BatteryManager(Stream *port)
 {
   // Constructor implementation
 	dataStream = port;
-  arrayPtr = result;
+  arrayPtr = qryRestult;
 }
 
 // Destructor
@@ -46,57 +46,109 @@ void BatteryManager::getBatteryStatus() {
 void BatteryManager::checkAllTheValue()
 {
   Serial.print("\nSOI: ");
-  positionCheckFunc(result,SOI,NUM_BYTE_1);
+  positionCheckFunc(qryRestult,SOI,NUM_BYTE_1);
   Serial.print("\nVER: ");
-  positionCheckFunc(result,VER,NUM_BYTE_2);
+  positionCheckFunc(qryRestult,VER,NUM_BYTE_2);
   Serial.print("\nADR: ");
-  positionCheckFunc(result,ADR,NUM_BYTE_2);
+  positionCheckFunc(qryRestult,ADR,NUM_BYTE_2);
   Serial.print("\nVol cell 1: ");
-  positionCheckFunc(result,VOL_CELL_01 ,NUM_BYTE_4);
+  positionCheckFunc(qryRestult,VOL_CELL_01 ,NUM_BYTE_4);
   Serial.print("\ntemp 1: ");
-  positionCheckFunc(result,TEM_1 ,NUM_BYTE_4);
+  positionCheckFunc(qryRestult,TEM_1 ,NUM_BYTE_4);
   Serial.print("\ncurrent: ");
-  positionCheckFunc(result,CURRENT ,NUM_BYTE_4);
+  positionCheckFunc(qryRestult,CURRENT ,NUM_BYTE_4);
   Serial.print("\nTOT_VOL: ");
-  positionCheckFunc(result,TOT_VOL ,NUM_BYTE_4);
+  positionCheckFunc(qryRestult,TOT_VOL ,NUM_BYTE_4);
   Serial.print("\nFULL_CAPACITY: ");
-  positionCheckFunc(result,FULL_CAPACITY ,NUM_BYTE_4);
+  positionCheckFunc(qryRestult,FULL_CAPACITY ,NUM_BYTE_4);
   Serial.print("\nDES_CAPACITY: ");
-  positionCheckFunc(result,DES_CAPACITY ,NUM_BYTE_4);
+  positionCheckFunc(qryRestult,DES_CAPACITY ,NUM_BYTE_4);
   Serial.print("\nCHECKSUM: ");
-  positionCheckFunc(result,CHECKSUM ,NUM_BYTE_4);
+  positionCheckFunc(qryRestult,CHECKSUM ,NUM_BYTE_4);
 }
 
 void BatteryManager::getAllValueIntoSubarray()
 {
+  int32_t outputDigit;
+
   Serial.print("\nSOI: ");
-  extractSubarray(result,SOI,NUM_BYTE_1,output_arr_buf);
+  extractSubarray(qryRestult,SOI,NUM_BYTE_1,output_arr_buf);
   Serial.print(output_arr_buf);
+  outputDigit = hexToDecimal(output_arr_buf);
+  Serial.print(" = ");
+  Serial.print(outputDigit);
+
   Serial.print("\nVER: ");
-  extractSubarray(result,VER,NUM_BYTE_2,output_arr_buf);
+  extractSubarray(qryRestult,VER,NUM_BYTE_2,output_arr_buf);
   Serial.print(output_arr_buf);
+  outputDigit = hexToDecimal(output_arr_buf);
+  Serial.print(" = ");
+  Serial.print(outputDigit);
+
   Serial.print("\nADR: ");
-  extractSubarray(result,ADR,NUM_BYTE_2,output_arr_buf);
+  extractSubarray(qryRestult,ADR,NUM_BYTE_2,output_arr_buf);
   Serial.print(output_arr_buf);
+  outputDigit = hexToDecimal(output_arr_buf);
+  Serial.print(" = ");
+  Serial.print(outputDigit);
+
   Serial.print("\nVol cell 1: ");
-  extractSubarray(result,VOL_CELL_01 ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(qryRestult,VOL_CELL_01 ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
+  outputDigit = hexToDecimal(output_arr_buf);
+  Serial.print(" = ");
+  Serial.print(outputDigit);
+
   Serial.print("\ntemp 1: ");
-  extractSubarray(result,TEM_1 ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(qryRestult,TEM_1 ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
+  outputDigit = hexToDecimal(output_arr_buf);
+  Serial.print(" = ");
+  Serial.print(outputDigit);
+
   Serial.print("\ncurrent: ");
-  extractSubarray(result,CURRENT ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(qryRestult,CURRENT ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
+  outputDigit = hexToDecimal(output_arr_buf);
+  Serial.print(" = ");
+  Serial.print(outputDigit);
+
   Serial.print("\nTOT_VOL: ");
-  extractSubarray(result,TOT_VOL ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(qryRestult,TOT_VOL ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
+  outputDigit = hexToDecimal(output_arr_buf);
+  Serial.print(" = ");
+  Serial.print(outputDigit);
+
   Serial.print("\nFULL_CAPACITY: ");
-  extractSubarray(result,FULL_CAPACITY ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(qryRestult,FULL_CAPACITY ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
+  outputDigit = hexToDecimal(output_arr_buf);
+  Serial.print(" = ");
+  Serial.print(outputDigit);
+
   Serial.print("\nDES_CAPACITY: ");
-  extractSubarray(result,DES_CAPACITY ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(qryRestult,DES_CAPACITY ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
+  outputDigit = hexToDecimal(output_arr_buf);
+  Serial.print(" = ");
+  Serial.print(outputDigit);
+
   Serial.print("\nCHECKSUM: ");
-  extractSubarray(result,CHECKSUM ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(qryRestult,CHECKSUM ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
+  outputDigit = hexToDecimal(output_arr_buf);
+  Serial.print(" = ");
+  Serial.print(outputDigit);
+}
+
+
+getCell1Voltage()
+{
+    Serial.print("\nVol cell 1: ");
+  extractSubarray(qryRestult,VOL_CELL_01 ,NUM_BYTE_4,output_arr_buf);
+  Serial.print(output_arr_buf);
+  outputDigit = hexToDecimal(output_arr_buf);
+  Serial.print(" = ");
+  Serial.print(outputDigit);
 }
