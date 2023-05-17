@@ -38,6 +38,7 @@ class BatteryManager
          */
         float getCellVoltage(int8_t cellNumber); 
         int8_t getNumberOfTemperature();
+        float getTemperature(int8_t temperature_serial);
         
 
     public: 
@@ -57,6 +58,7 @@ class BatteryManager
          * @return The actual voltage in float.
          */
         float getActualVoltage(int32_t input);
+        float getActualTemperature(int32_t input);
         
 
 

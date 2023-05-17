@@ -233,3 +233,42 @@ int8_t BatteryManager::getNumberOfTemperature()
   return num_of_temp;
 }
 
+float BatteryManager::getTemperature(int8_t temperature_serial)
+{
+  if (temperature_serial < 1 || temperature_serial > 6)
+  {
+    return -1; // Return -1 for invalid temperature number
+  }
+  
+  int startPos = TEM_ALL + ((temperature_serial - 1) * NUM_BYTE_4);
+  char temp_buf[10];
+  
+  // Extract the subarray representing the voltage of the specified cell
+  if (!extractSubarray(qryRestult, startPos, NUM_BYTE_4, temp_buf))
+  {
+    return -1; // Return -1 if extraction fails or invalid input
+  }
+  
+  // Convert the extracted subarray to a decimal value
+  int32_t outputDigit = hexToDecimal(temp_buf);
+
+  // Calculate the actual voltage based on the decimal value
+  // float actualVoltage = getActualVoltage(outputDigit);
+  float actualTemp = getActualTemperature(outputDigit);
+  
+  // Print the decimal value for debugging purposes
+  Serial.print("Temperature ");
+  Serial.print(temperature_serial);
+  Serial.print(" = ");
+  Serial.println(actualTemp);
+
+  return actualTemp; // Return the voltage of the specified cell as a decimal value
+}
+
+float BatteryManager::getActualTemperature(int32_t input)
+{
+  
+  float output = ((float)input - TEMPERATURE_FACTOR_1) / TEMPERATURE_FACTOR_2;  
+  
+  return output; 
+}
