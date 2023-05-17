@@ -7,4 +7,38 @@ const byte query2[] PROGMEM = { 0x7E, 0x32, 0x35, 0x30, 0x31, 0x34, 0x36, 0x43, 
 const byte query3[] PROGMEM = { 0x7E, 0x32, 0x35, 0x30, 0x31, 0x34, 0x36, 0x34, 0x32, 0x45, 0x30, 0x30, 0x32, 0x30, 0x31, 0x46, 0x44, 0x33, 0x30, 0x0D};
 const byte query4[] PROGMEM = { 0x7E, 0x32, 0x35, 0x30, 0x31, 0x34, 0x36, 0x34, 0x34, 0x45, 0x30, 0x30, 0x32, 0x30, 0x31, 0x46, 0x44, 0x32, 0x45, 0x0D};
 
+const char result[] = "~250F4600307600010F0CAA0CA40CAD0CAC0CAF0CAD0CA30CAC0CAD0CAB0CA90CA40CA80CAC0CA5060BCD0BC80BCA0BC20BB80BEE0000BDF009C403271000002710E2C3";
+#define NUM_BYTE 04
+
+// position
+#define SOI 					00
+#define VER 					01
+#define ADR 					03
+#define	CID1 					05
+#define CID2					07
+#define	LEN						09
+#define	INFO					13
+#define	idk						15
+#define NUM_PACK			17
+#define	VOL_CELL_ALL	19
+#define VOL_CELL_01		VOL_CELL_ALL + NUM_BYTE * 00
+#define VOL_CELL_02		VOL_CELL_ALL + NUM_BYTE * 01			
+#define VOL_CELL_03		VOL_CELL_ALL + NUM_BYTE * 02
+#define VOL_CELL_04		VOL_CELL_ALL + NUM_BYTE * 03
+#define VOL_CELL_05		VOL_CELL_ALL + NUM_BYTE * 04
+#define VOL_CELL_06		VOL_CELL_ALL + NUM_BYTE * 05
+#define VOL_CELL_07		VOL_CELL_ALL + NUM_BYTE * 06
+#define VOL_CELL_08		VOL_CELL_ALL + NUM_BYTE * 07
+#define VOL_CELL_09		VOL_CELL_ALL + NUM_BYTE * 08
+#define VOL_CELL_10		VOL_CELL_ALL + NUM_BYTE * 09
+#define VOL_CELL_11		VOL_CELL_ALL + NUM_BYTE * 10
+#define VOL_CELL_12		VOL_CELL_ALL + NUM_BYTE * 11
+#define VOL_CELL_13		VOL_CELL_ALL + NUM_BYTE * 12
+#define VOL_CELL_14		VOL_CELL_ALL + NUM_BYTE * 13
+#define VOL_CELL_15		VOL_CELL_ALL + NUM_BYTE * 14
+
+
+
+
+
 #endif // BATTERYCOMMAND_H
