@@ -159,9 +159,6 @@ int8_t BatteryManager::getNumberOfCell()
   return num_of_cell;
 }
 
-
-
-
 /**
  * getCellVoltage - Retrieves the voltage of a specific cell in the battery pack.
  * 
@@ -219,3 +216,20 @@ float BatteryManager::getActualVoltage(int32_t input)
   
   return output; // Return the actual voltage in float
 }
+
+int8_t BatteryManager::getNumberOfTemperature()
+{
+  char temp_buf[10];
+  
+  if (!extractSubarray(qryRestult, NUM_TEM, NUM_BYTE_2, temp_buf))
+  {
+    return -1; // Return -1 if extraction fails or invalid input
+  }
+  
+  int8_t num_of_temp = hexToDecimal(temp_buf);
+  Serial.print("number of temp: ");
+  Serial.println(num_of_temp);
+
+  return num_of_temp;
+}
+

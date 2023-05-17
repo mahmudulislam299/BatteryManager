@@ -24,6 +24,9 @@ class BatteryManager
         void getAllValueIntoSubarray();
         
 
+
+        int8_t getNumberOfCell();
+
         /**
          * getCellVoltage - Retrieves the voltage of a specific cell in the battery pack.
          * 
@@ -33,10 +36,8 @@ class BatteryManager
          * @param cellNumber  The number of the cell to retrieve the voltage for.
          * @return The voltage of the specified cell, or -1 if the cell number is invalid or extraction fails.
          */
-        float getCellVoltage(int8_t cellNumber);
-        
-
-        int8_t getNumberOfCell();
+        float getCellVoltage(int8_t cellNumber); 
+        int8_t getNumberOfTemperature();
         
 
     public: 
@@ -44,6 +45,7 @@ class BatteryManager
 
     private:
         // private memver functions
+
         /**
          * getActualVoltage - Converts the input voltage to actual voltage in float.
          * 
