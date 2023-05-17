@@ -1,6 +1,6 @@
 #include "Utility.h"
 
-char postionCheckFunc(char *arr, int postion, int num_byte)
+void positionCheckFunc(char *arr, int postion, int num_byte)
 {
 	for(int i =0 ; i < num_byte; i++)
 	{
@@ -10,27 +10,54 @@ char postionCheckFunc(char *arr, int postion, int num_byte)
 }
 
 
-void extractSubarray(const char* input, int startPos, int size, char* output) 
+bool extractSubarray(const char* input, int startPos, int size, char* output) 
 {
-  int endPos = startPos + size;
+  // Check if the input array is empty or NULL
+  if (input == NULL || input[0] == '\0')
+  {
+    return false; // Return false for invalid input
+  }
+
+  // Check if the starting position is valid
+  if (startPos < 0 || startPos >= strlen(input))
+  {
+    return false; // Return false for invalid starting position
+  }
+
+  // Check if the size is valid
+  if (size <= 0 || startPos + size > strlen(input))
+  {
+    return false; // Return false for invalid size
+  }
 
   // Extract the subarray
   int j = 0;
-  for (int i = startPos; i < endPos; i++) {
+  for (int i = startPos; i < startPos + size; i++) {
     output[j] = input[i];
     j++;
   }
   output[j] = '\0'; // Null-terminate the output array
+
+  return true; // Return true for successful extraction
 }
 
+int32_t hexToDecimal(const char* hexString) 
+{
+  // Check if the input string is empty or NULL
+  if (hexString == NULL || hexString[0] == '\0')
+  {
+    return -1; // Return -1 for invalid input
+  }
 
+  // Verify if the input string is a valid hexadecimal representation
+  for (int i = 0; hexString[i] != '\0'; i++)
+  {
+    if (!isxdigit(hexString[i]))
+    {
+      return -1; // Return -1 for invalid input
+    }
+  }
 
-// void loop() {
-//   char arr[] = "~250F46003076000";
-//   char output_arr[10]; // Adjust the size as per your requirement
-
-//   extractSubarray(arr, 1, 4, output_arr);
-
-//   Serial.println(output_arr); // Print the extracted subarray
-//   delay(1000);
-// }
+  int32_t decimalValue = strtol(hexString, NULL, 16);
+  return decimalValue;
+}
