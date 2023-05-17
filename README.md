@@ -11,7 +11,16 @@
 **BatteryManager** is a C++ library for monitoring and mananging Lithum-ion battery BMS from remotely. it will help get all kind of battery information from bms device such as 
 * pack voltage,
 * pack current,
-* cell voltage,
-* cell temperature,
+* cell voltage [1 .. 15],
+* temperature [1 .. 4],
+* MOS Temperature
+* Environment Temparatue
+* Max Cell voltage
+* Min Cell Voltage
+* Voltage Diff
 * SOC
+* SOH
+* Remain Capacity
+* Full Capacity
+* Battery Cycle
  
