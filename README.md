@@ -20,7 +20,9 @@
 * Voltage Diff
 * SOC
 * SOH
-* Remain Capacity
+* Remaining Capacity
 * Full Capacity
 * Battery Cycle
+
+
  
