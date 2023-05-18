@@ -51,6 +51,9 @@ class BatteryManager
     private:
         // private memver functions
 
+        //
+        void clearBufferStream();
+
         /**
          * getActualVoltage - Converts the input voltage to actual voltage in float.
          * 

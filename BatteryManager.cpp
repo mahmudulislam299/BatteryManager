@@ -17,6 +17,18 @@ BatteryManager::~BatteryManager() {
 }
 
 // Member functions implementation
+
+
+void BatteryManager::clearBufferStream()
+{
+  while (dataStream -> available())
+  {
+    dataStream -> read();
+  }
+}
+
+
+
 void BatteryManager::chargeBattery() 
 {
 	Serial.println("sending data of value");
