@@ -272,3 +272,19 @@ float BatteryManager::getActualTemperature(int32_t input)
   
   return output; 
 }
+
+int32_t BatteryManager::getPackCurrent()
+{
+  char temp_buf[10];
+  
+  if (!extractSubarray(qryRestult, CURRENT, NUM_BYTE_4, temp_buf))
+  {
+    return -1; // Return -1 if extraction fails or invalid input
+  }
+  
+  int32_t pack_current = hexToDecimal(temp_buf);
+  Serial.print("pack Current: ");
+  Serial.println(pack_current);
+
+  return pack_current;
+}
