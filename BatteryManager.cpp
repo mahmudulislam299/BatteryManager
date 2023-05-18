@@ -29,15 +29,15 @@ void BatteryManager::clearBufferStream()
 
 
 
-void BatteryManager::chargeBattery() 
+void BatteryManager::sendCommandToGetAllBatInfo() 
 {
 	Serial.println("sending data of value");
+  dataStream->flush();
 	for (int i = 0; i< sizeof(query1); i++)
   {
-    dataStream->flush();
     dataStream->write(query1[i]);
-    // Serial.print(query1[i], HEX);
-    Serial.print(query1[i]);
+    Serial.print(query1[i], HEX);
+    // Serial.print(query1[i]);
     Serial.print(" ");
   }
 
