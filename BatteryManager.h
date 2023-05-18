@@ -39,7 +39,8 @@ class BatteryManager
         float getCellVoltage(int8_t cellNumber); 
         int8_t getNumberOfTemperature();
         float getTemperature(int8_t temperature_serial);
-        int32_t getPackCurrent();
+        float getPackCurrent();
+        float getPackVoltage();
 
         
 

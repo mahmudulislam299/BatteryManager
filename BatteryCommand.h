@@ -50,8 +50,8 @@ char qryRestult[] = "~250F4600307600010F0CAA0CA40CAD0CAC0CAF0CAD0CA30CAC0CAD0CAB
 #define TEM_4					TEM_ALL + NUM_BYTE_4 * 03	
 #define TEM_5					TEM_ALL + NUM_BYTE_4 * 04	
 #define TEM_6					TEM_ALL + NUM_BYTE_4 * 05					
-#define	CURRENT				105
-#define TOT_VOL				109
+#define	PACK_CURRENT	105
+#define PACK_VOLTAGE	109
 #define CAPACITY			113
 #define CUSTOM				117
 #define FULL_CAPACITY	119

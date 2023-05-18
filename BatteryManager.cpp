@@ -56,9 +56,9 @@ void BatteryManager::checkAllTheValue()
   Serial.print("\ntemp 1: ");
   positionCheckFunc(qryRestult,TEM_1 ,NUM_BYTE_4);
   Serial.print("\ncurrent: ");
-  positionCheckFunc(qryRestult,CURRENT ,NUM_BYTE_4);
+  positionCheckFunc(qryRestult,PACK_CURRENT ,NUM_BYTE_4);
   Serial.print("\nTOT_VOL: ");
-  positionCheckFunc(qryRestult,TOT_VOL ,NUM_BYTE_4);
+  positionCheckFunc(qryRestult,PACK_VOLTAGE ,NUM_BYTE_4);
   Serial.print("\nFULL_CAPACITY: ");
   positionCheckFunc(qryRestult,FULL_CAPACITY ,NUM_BYTE_4);
   Serial.print("\nDES_CAPACITY: ");
@@ -107,14 +107,14 @@ void BatteryManager::getAllValueIntoSubarray()
   Serial.print(outputDigit);
 
   Serial.print("\ncurrent: ");
-  extractSubarray(qryRestult,CURRENT ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(qryRestult,PACK_CURRENT ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
   outputDigit = hexToDecimal(output_arr_buf);
   Serial.print(" = ");
   Serial.print(outputDigit);
 
   Serial.print("\nTOT_VOL: ");
-  extractSubarray(qryRestult,TOT_VOL ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(qryRestult,PACK_VOLTAGE ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
   outputDigit = hexToDecimal(output_arr_buf);
   Serial.print(" = ");
@@ -194,7 +194,7 @@ float BatteryManager::getCellVoltage(int8_t cellNumber)
   Serial.print("Cell ");
   Serial.print(cellNumber);
   Serial.print(" Voltage = ");
-  Serial.println(actualVoltage);
+  Serial.println(actualVoltage,3);
 
   return actualVoltage; // Return the voltage of the specified cell as a decimal value
 }
@@ -260,7 +260,7 @@ float BatteryManager::getTemperature(int8_t temperature_serial)
   Serial.print("Temperature ");
   Serial.print(temperature_serial);
   Serial.print(" = ");
-  Serial.println(actualTemp);
+  Serial.println(actualTemp,3);
 
   return actualTemp; // Return the voltage of the specified cell as a decimal value
 }
@@ -273,18 +273,39 @@ float BatteryManager::getActualTemperature(int32_t input)
   return output; 
 }
 
-int32_t BatteryManager::getPackCurrent()
+float BatteryManager::getPackCurrent()
 {
   char temp_buf[10];
   
-  if (!extractSubarray(qryRestult, CURRENT, NUM_BYTE_4, temp_buf))
+  if (!extractSubarray(qryRestult, PACK_CURRENT, NUM_BYTE_4, temp_buf))
   {
     return -1; // Return -1 if extraction fails or invalid input
   }
   
-  int32_t pack_current = hexToDecimal(temp_buf);
+  int32_t output = hexToDecimal(temp_buf);
+  
+  // TODO: get actual current
+
+  float pack_current = output;
   Serial.print("pack Current: ");
   Serial.println(pack_current);
 
   return pack_current;
+}
+
+float BatteryManager::getPackVoltage()
+{
+  char temp_buf[10];
+  
+  if (!extractSubarray(qryRestult, PACK_VOLTAGE, NUM_BYTE_4, temp_buf))
+  {
+    return -1; // Return -1 if extraction fails or invalid input
+  }
+  
+  int32_t output = hexToDecimal(temp_buf);
+  float pack_voltage = getActualVoltage(output);
+  Serial.print("pack Voltage: ");
+  Serial.println(pack_voltage,3);
+
+  return pack_voltage;
 }
