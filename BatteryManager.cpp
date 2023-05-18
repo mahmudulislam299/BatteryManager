@@ -8,7 +8,7 @@ BatteryManager::BatteryManager(Stream *port)
 {
   // Constructor implementation
 	dataStream = port;
-  arrayPtr = qryRestult;
+  arrayPtr = dataStreamBuffer;
 }
 
 // Destructor
@@ -45,7 +45,7 @@ void BatteryManager::sendCommandToGetAllBatInfo()
 
 }
 
-
+// TODO: need to modify it
 void BatteryManager::sendCommand(int8_t no) 
 {  
     int len = sizeof(queryAll[no]) / sizeof(byte);
@@ -68,6 +68,69 @@ void BatteryManager::sendCommand(int8_t no)
 
 }
 
+
+
+void BatteryManager::readDataStream(char* buffer, int bufferSize, unsigned long timeout)
+{
+  unsigned long startTime = millis(); // Get the current time
+  int index = 0; // Index to track the position in the buffer
+  Serial.println("read data stream......");
+  while (millis() - startTime < timeout) 
+  {
+    Serial.println("in the while...");
+    if (dataStream->available()) 
+    {
+      char c = dataStream->read(); // Read a character from Serial
+
+      buffer[index] = c; // Store the character in the buffer
+      index++;
+
+      if (index >= bufferSize - 1) 
+      {
+        break; // Reached the buffer size limit, exit the loop
+      }
+    }
+  }
+
+  buffer[index] = '\0'; // Null-terminate the buffer to mark the end of the received data
+
+}
+
+
+void BatteryManager::readDataStream2(char* buffer, int bufferSize, unsigned long timeout)
+{
+  Serial.println("\nwaiting for data received");
+  int index = 0;
+  unsigned long start_time = millis();
+  Serial.println("Received Data: ");
+  while (millis() - start_time < timeout) 
+  {
+    if (dataStream->available() > 0) 
+    {
+      while (dataStream->available() > 0) 
+      {
+        
+        char c = dataStream->read();
+        buffer[index] = c;
+        index++;
+        //    Serial.print(c,HEX);
+        Serial.print(c);
+        // Serial.print(" ");
+      }     
+    }
+  }
+
+  buffer[index] = '\0';
+  Serial.println(" ");
+}
+
+// TODO: function name should be changed
+void BatteryManager::send_receive()
+{
+  sendCommand(2);
+  readDataStream2(dataStreamBuffer,128,5000);
+}
+
 void BatteryManager::dischargeBattery() {
     // Implementation of dischargeBattery()
 }
@@ -83,25 +146,25 @@ void BatteryManager::getBatteryStatus() {
 void BatteryManager::checkAllTheValue()
 {
   Serial.print("\nSOI: ");
-  positionCheckFunc(qryRestult,SOI,NUM_BYTE_1);
+  positionCheckFunc(dataStreamBuffer,SOI,NUM_BYTE_1);
   Serial.print("\nVER: ");
-  positionCheckFunc(qryRestult,VER,NUM_BYTE_2);
+  positionCheckFunc(dataStreamBuffer,VER,NUM_BYTE_2);
   Serial.print("\nADR: ");
-  positionCheckFunc(qryRestult,ADR,NUM_BYTE_2);
+  positionCheckFunc(dataStreamBuffer,ADR,NUM_BYTE_2);
   Serial.print("\nVol cell 1: ");
-  positionCheckFunc(qryRestult,VOL_CELL_01 ,NUM_BYTE_4);
+  positionCheckFunc(dataStreamBuffer,VOL_CELL_01 ,NUM_BYTE_4);
   Serial.print("\ntemp 1: ");
-  positionCheckFunc(qryRestult,TEM_1 ,NUM_BYTE_4);
+  positionCheckFunc(dataStreamBuffer,TEM_1 ,NUM_BYTE_4);
   Serial.print("\ncurrent: ");
-  positionCheckFunc(qryRestult,PACK_CURRENT ,NUM_BYTE_4);
+  positionCheckFunc(dataStreamBuffer,PACK_CURRENT ,NUM_BYTE_4);
   Serial.print("\nTOT_VOL: ");
-  positionCheckFunc(qryRestult,PACK_VOLTAGE ,NUM_BYTE_4);
+  positionCheckFunc(dataStreamBuffer,PACK_VOLTAGE ,NUM_BYTE_4);
   Serial.print("\nFULL_CAPACITY: ");
-  positionCheckFunc(qryRestult,FULL_CAPACITY ,NUM_BYTE_4);
+  positionCheckFunc(dataStreamBuffer,FULL_CAPACITY ,NUM_BYTE_4);
   Serial.print("\nDES_CAPACITY: ");
-  positionCheckFunc(qryRestult,DES_CAPACITY ,NUM_BYTE_4);
+  positionCheckFunc(dataStreamBuffer,DES_CAPACITY ,NUM_BYTE_4);
   Serial.print("\nCHECKSUM: ");
-  positionCheckFunc(qryRestult,CHECKSUM ,NUM_BYTE_4);
+  positionCheckFunc(dataStreamBuffer,CHECKSUM ,NUM_BYTE_4);
 }
 
 void BatteryManager::getAllValueIntoSubarray()
@@ -109,70 +172,70 @@ void BatteryManager::getAllValueIntoSubarray()
   int32_t outputDigit;
 
   Serial.print("\nSOI: ");
-  extractSubarray(qryRestult,SOI,NUM_BYTE_1,output_arr_buf);
+  extractSubarray(dataStreamBuffer,SOI,NUM_BYTE_1,output_arr_buf);
   Serial.print(output_arr_buf);
   outputDigit = hexToDecimal(output_arr_buf);
   Serial.print(" = ");
   Serial.print(outputDigit);
 
   Serial.print("\nVER: ");
-  extractSubarray(qryRestult,VER,NUM_BYTE_2,output_arr_buf);
+  extractSubarray(dataStreamBuffer,VER,NUM_BYTE_2,output_arr_buf);
   Serial.print(output_arr_buf);
   outputDigit = hexToDecimal(output_arr_buf);
   Serial.print(" = ");
   Serial.print(outputDigit);
 
   Serial.print("\nADR: ");
-  extractSubarray(qryRestult,ADR,NUM_BYTE_2,output_arr_buf);
+  extractSubarray(dataStreamBuffer,ADR,NUM_BYTE_2,output_arr_buf);
   Serial.print(output_arr_buf);
   outputDigit = hexToDecimal(output_arr_buf);
   Serial.print(" = ");
   Serial.print(outputDigit);
 
   Serial.print("\nVol cell 1: ");
-  extractSubarray(qryRestult,VOL_CELL_01 ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(dataStreamBuffer,VOL_CELL_01 ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
   outputDigit = hexToDecimal(output_arr_buf);
   Serial.print(" = ");
   Serial.print(outputDigit);
 
   Serial.print("\ntemp 1: ");
-  extractSubarray(qryRestult,TEM_1 ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(dataStreamBuffer,TEM_1 ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
   outputDigit = hexToDecimal(output_arr_buf);
   Serial.print(" = ");
   Serial.print(outputDigit);
 
   Serial.print("\ncurrent: ");
-  extractSubarray(qryRestult,PACK_CURRENT ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(dataStreamBuffer,PACK_CURRENT ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
   outputDigit = hexToDecimal(output_arr_buf);
   Serial.print(" = ");
   Serial.print(outputDigit);
 
   Serial.print("\nTOT_VOL: ");
-  extractSubarray(qryRestult,PACK_VOLTAGE ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(dataStreamBuffer,PACK_VOLTAGE ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
   outputDigit = hexToDecimal(output_arr_buf);
   Serial.print(" = ");
   Serial.print(outputDigit);
 
   Serial.print("\nFULL_CAPACITY: ");
-  extractSubarray(qryRestult,FULL_CAPACITY ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(dataStreamBuffer,FULL_CAPACITY ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
   outputDigit = hexToDecimal(output_arr_buf);
   Serial.print(" = ");
   Serial.print(outputDigit);
 
   Serial.print("\nDES_CAPACITY: ");
-  extractSubarray(qryRestult,DES_CAPACITY ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(dataStreamBuffer,DES_CAPACITY ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
   outputDigit = hexToDecimal(output_arr_buf);
   Serial.print(" = ");
   Serial.print(outputDigit);
 
   Serial.print("\nCHECKSUM: ");
-  extractSubarray(qryRestult,CHECKSUM ,NUM_BYTE_4,output_arr_buf);
+  extractSubarray(dataStreamBuffer,CHECKSUM ,NUM_BYTE_4,output_arr_buf);
   Serial.print(output_arr_buf);
   outputDigit = hexToDecimal(output_arr_buf);
   Serial.print(" = ");
@@ -184,7 +247,7 @@ int8_t BatteryManager::getNumberOfCell()
 {
   char temp_buf[10];
   
-  if (!extractSubarray(qryRestult, NUM_PACK, NUM_BYTE_2, temp_buf))
+  if (!extractSubarray(dataStreamBuffer, NUM_PACK, NUM_BYTE_2, temp_buf))
   {
     return -1; // Return -1 if extraction fails or invalid input
   }
@@ -216,7 +279,7 @@ float BatteryManager::getCellVoltage(int8_t cellNumber)
   char cell_vol_buf[10];
   
   // Extract the subarray representing the voltage of the specified cell
-  if (!extractSubarray(qryRestult, startPos, NUM_BYTE_4, cell_vol_buf))
+  if (!extractSubarray(dataStreamBuffer, startPos, NUM_BYTE_4, cell_vol_buf))
   {
     return -1; // Return -1 if extraction fails or invalid input
   }
@@ -258,7 +321,7 @@ int8_t BatteryManager::getNumberOfTemperature()
 {
   char temp_buf[10];
   
-  if (!extractSubarray(qryRestult, NUM_TEM, NUM_BYTE_2, temp_buf))
+  if (!extractSubarray(dataStreamBuffer, NUM_TEM, NUM_BYTE_2, temp_buf))
   {
     return -1; // Return -1 if extraction fails or invalid input
   }
@@ -281,7 +344,7 @@ float BatteryManager::getTemperature(int8_t temperature_serial)
   char temp_buf[10];
   
   // Extract the subarray representing the voltage of the specified cell
-  if (!extractSubarray(qryRestult, startPos, NUM_BYTE_4, temp_buf))
+  if (!extractSubarray(dataStreamBuffer, startPos, NUM_BYTE_4, temp_buf))
   {
     return -1; // Return -1 if extraction fails or invalid input
   }
@@ -314,7 +377,7 @@ float BatteryManager::getPackCurrent()
 {
   char temp_buf[10];
   
-  if (!extractSubarray(qryRestult, PACK_CURRENT, NUM_BYTE_4, temp_buf))
+  if (!extractSubarray(dataStreamBuffer, PACK_CURRENT, NUM_BYTE_4, temp_buf))
   {
     return -1; // Return -1 if extraction fails or invalid input
   }
@@ -334,7 +397,7 @@ float BatteryManager::getPackVoltage()
 {
   char temp_buf[10];
   
-  if (!extractSubarray(qryRestult, PACK_VOLTAGE, NUM_BYTE_4, temp_buf))
+  if (!extractSubarray(dataStreamBuffer, PACK_VOLTAGE, NUM_BYTE_4, temp_buf))
   {
     return -1; // Return -1 if extraction fails or invalid input
   }
@@ -352,7 +415,7 @@ float BatteryManager::getRemainingCapacity()
 {
   char temp_buf[10];
   
-  if (!extractSubarray(qryRestult, REMAIN_CAPACITY, NUM_BYTE_4, temp_buf))
+  if (!extractSubarray(dataStreamBuffer, REMAIN_CAPACITY, NUM_BYTE_4, temp_buf))
   {
     return -1; // Return -1 if extraction fails or invalid input
   }

@@ -17,6 +17,11 @@ class BatteryManager
         void sendCommandToGetAllBatInfo();
         void sendCommand(int8_t no);
 
+        void readDataStream(char* buffer, int bufferSize = 256, unsigned long timeout = 5000);
+        void readDataStream2(char* buffer, int bufferSize = 256, unsigned long timeout = 5000);
+
+        void send_receive();
+
         void dischargeBattery();
         void getBatteryStatus();
 
@@ -75,6 +80,7 @@ class BatteryManager
         // Member variables
         // Add member variables as needed
 		Stream *dataStream;
+        char dataStreamBuffer[256];
         char* arrayPtr;
         char output_arr_buf[10]; // handle subarray
 
