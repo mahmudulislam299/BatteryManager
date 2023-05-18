@@ -15,6 +15,8 @@ class BatteryManager
     public:
         // public Member functions
         void sendCommandToGetAllBatInfo();
+        void sendCommand(int8_t no);
+
         void dischargeBattery();
         void getBatteryStatus();
 
