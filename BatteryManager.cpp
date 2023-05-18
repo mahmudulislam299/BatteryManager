@@ -309,3 +309,22 @@ float BatteryManager::getPackVoltage()
 
   return pack_voltage;
 }
+
+
+float BatteryManager::getRemainingCapacity()
+{
+  char temp_buf[10];
+  
+  if (!extractSubarray(qryRestult, REMAIN_CAPACITY, NUM_BYTE_4, temp_buf))
+  {
+    return -1; // Return -1 if extraction fails or invalid input
+  }
+  
+  int32_t output = hexToDecimal(temp_buf);
+  // TODO: get actual capacity value()
+  float remain_capacity = output;
+  Serial.print("remain capacity: ");
+  Serial.println(remain_capacity,3);
+
+  return remain_capacity;
+}

@@ -41,6 +41,7 @@ class BatteryManager
         float getTemperature(int8_t temperature_serial);
         float getPackCurrent();
         float getPackVoltage();
+        float getRemainingCapacity();
 
         
 
