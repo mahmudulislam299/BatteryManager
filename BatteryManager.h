@@ -37,12 +37,13 @@ class BatteryManager
         void sendCommand(int8_t no);
 
         void readDataStream(char* buffer, int bufferSize = BUFFER_SIZE, unsigned long timeout = 1000);
-        void readDataStream2(char* buffer, int bufferSize = BUFFER_SIZE, unsigned long timeout = 1000);
 
         void send_receive();
 
         void dischargeBattery();
+
         BatteryStatus getBatteryStatus();
+        void printBatteryStatus(BatteryStatus& batteryStatus);
 
 
         // Add more member functions as needed

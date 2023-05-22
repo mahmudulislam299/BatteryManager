@@ -86,34 +86,9 @@ void BatteryManager::sendCommand(int8_t no)
 
 
 
+
+
 void BatteryManager::readDataStream(char* buffer, int bufferSize, unsigned long timeout)
-{
-  unsigned long startTime = millis(); // Get the current time
-  int index = 0; // Index to track the position in the buffer
-  Serial.println("read data stream......");
-  while (millis() - startTime < timeout) 
-  {
-    Serial.println("in the while...");
-    if (dataStream->available()) 
-    {
-      char c = dataStream->read(); // Read a character from Serial
-
-      buffer[index] = c; // Store the character in the buffer
-      index++;
-
-      if (index >= bufferSize - 1) 
-      {
-        break; // Reached the buffer size limit, exit the loop
-      }
-    }
-  }
-
-  buffer[index] = '\0'; // Null-terminate the buffer to mark the end of the received data
-
-}
-
-
-void BatteryManager::readDataStream2(char* buffer, int bufferSize, unsigned long timeout)
 {
   Serial.println("\nwaiting for data received");
   int index = 0;
@@ -146,7 +121,7 @@ void BatteryManager::send_receive()
   sendCommand(2);
   clearBuffer(dataStreamBuffer,BUFFER_SIZE);
   printBuffer(dataStreamBuffer,BUFFER_SIZE);
-  readDataStream2(dataStreamBuffer,BUFFER_SIZE,10000);
+  readDataStream(dataStreamBuffer,BUFFER_SIZE,500);
 }
 
 void BatteryManager::dischargeBattery() {
@@ -159,15 +134,16 @@ BatteryStatus BatteryManager::getBatteryStatus()
   batteryStatus.numberOfCells = getNumberOfCell();
   batteryStatus.numberOfTemperatures = getNumberOfTemperature();
   
-  for(int i = 0; i < 15; i++)
+  for(int i = 1; i < 16; i++)
   {
     batteryStatus.cellVoltages[i]= getCellVoltage(i);
-
-    if(i<6)
-    {
-      batteryStatus.temperatureReadings[i] = getTemperatureReading(i);
-    }
   }
+
+  for(int i = 1; i <6; i++)
+  {
+    batteryStatus.temperatureReadings[i] = getTemperatureReading(i);
+  }
+
 
   batteryStatus.packVoltage = getPackVoltage();
   batteryStatus.packCurrent = getPackCurrent();
@@ -182,6 +158,49 @@ BatteryStatus BatteryManager::getBatteryStatus()
     return batteryStatus;
    
 }
+
+void BatteryManager::printBatteryStatus(BatteryStatus& batteryStatus) 
+{
+  Serial.println("Battery Status:");
+  Serial.print("Number of Cells: ");
+  Serial.println(batteryStatus.numberOfCells);
+
+  Serial.println("Cell Voltages:");
+  for (int i = 1; i < 16; i++) 
+  {
+    Serial.print("Cell ");
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.println(batteryStatus.cellVoltages[i]);
+  }
+
+  Serial.print("Number of Temperatures: ");
+  Serial.println(batteryStatus.numberOfTemperatures);
+
+  Serial.println("Temperature Readings:");
+  for (int i = 1; i < 6; i++) {
+    Serial.print("Temperature ");
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.println(batteryStatus.temperatureReadings[i]);
+  }
+
+  Serial.print("Pack Voltage: ");
+  Serial.println(batteryStatus.packVoltage);
+  Serial.print("Pack Current: ");
+  Serial.println(batteryStatus.packCurrent);
+  Serial.print("Remaining Capacity: ");
+  Serial.println(batteryStatus.remainingCapacity);
+  Serial.print("Full Capacity: ");
+  Serial.println(batteryStatus.fullCapacity);
+  Serial.print("Discharge Cycle: ");
+  Serial.println(batteryStatus.dischargeCycle);
+  Serial.print("Design Capacity: ");
+  Serial.println(batteryStatus.designCapacity);
+  Serial.print("Checksum: ");
+  Serial.println(batteryStatus.checksum);
+};
+
 
 // Implement the remaining member functions here
 
@@ -312,7 +331,7 @@ int8_t BatteryManager::getNumberOfCell()
  */
 float BatteryManager::getCellVoltage(int8_t cellNumber)
 {
-  if (cellNumber < 1 || cellNumber > 15)
+  if (cellNumber < 1 || cellNumber > 16)
   {
     Serial.println("invalid cell number");
     return -1; // Return -1 for invalid cell number
