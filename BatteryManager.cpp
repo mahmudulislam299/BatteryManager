@@ -19,7 +19,7 @@ BatteryManager::~BatteryManager() {
 // Member functions implementation
 
 
-void BatteryManager::clearBufferStream()
+void BatteryManager::clearStream()
 {
   while (dataStream -> available())
   {
@@ -27,6 +27,22 @@ void BatteryManager::clearBufferStream()
   }
 }
 
+void BatteryManager::clearBuffer(char *buffer, int bufferSize)
+{
+  memset(buffer,0,bufferSize);
+}
+
+
+void BatteryManager::printBuffer(char* buffer, int bufferSize) 
+{
+  Serial.print("print buffer: ");
+
+  for (int i = 0; i < bufferSize; i++) 
+  {
+    Serial.print(buffer[i]);
+  }
+  Serial.println();
+}
 
 
 void BatteryManager::sendCommandToGetAllBatInfo() 
@@ -128,7 +144,9 @@ void BatteryManager::readDataStream2(char* buffer, int bufferSize, unsigned long
 void BatteryManager::send_receive()
 {
   sendCommand(2);
-  readDataStream2(dataStreamBuffer,128,5000);
+  clearBuffer(dataStreamBuffer,BUFFER_SIZE);
+  printBuffer(dataStreamBuffer,BUFFER_SIZE);
+  readDataStream2(dataStreamBuffer,BUFFER_SIZE,10000);
 }
 
 void BatteryManager::dischargeBattery() {
@@ -272,6 +290,7 @@ float BatteryManager::getCellVoltage(int8_t cellNumber)
 {
   if (cellNumber < 1 || cellNumber > 15)
   {
+    Serial.println("invalid cell number");
     return -1; // Return -1 for invalid cell number
   }
   
@@ -323,6 +342,7 @@ int8_t BatteryManager::getNumberOfTemperature()
   
   if (!extractSubarray(dataStreamBuffer, NUM_TEM, NUM_BYTE_2, temp_buf))
   {
+    Serial.println("failed to get number of temperature");
     return -1; // Return -1 if extraction fails or invalid input
   }
   
@@ -337,6 +357,7 @@ float BatteryManager::getTemperature(int8_t temperature_serial)
 {
   if (temperature_serial < 1 || temperature_serial > 6)
   {
+    Serial.println("invalid temperature serial");
     return -1; // Return -1 for invalid temperature number
   }
   
@@ -346,6 +367,8 @@ float BatteryManager::getTemperature(int8_t temperature_serial)
   // Extract the subarray representing the voltage of the specified cell
   if (!extractSubarray(dataStreamBuffer, startPos, NUM_BYTE_4, temp_buf))
   {
+    Serial.print("failed to get temperature");
+    Serial.println(temperature_serial);
     return -1; // Return -1 if extraction fails or invalid input
   }
   
@@ -379,6 +402,7 @@ float BatteryManager::getPackCurrent()
   
   if (!extractSubarray(dataStreamBuffer, PACK_CURRENT, NUM_BYTE_4, temp_buf))
   {
+    Serial.println("failed to get pack current");
     return -1; // Return -1 if extraction fails or invalid input
   }
   

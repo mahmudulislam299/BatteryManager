@@ -3,6 +3,10 @@
 
 #include <Arduino.h>
 
+#define BUFFER_SIZE 256
+#define COMM_TIMEOUT 1000
+
+
 class BatteryManager 
 {
 	public:
@@ -17,8 +21,8 @@ class BatteryManager
         void sendCommandToGetAllBatInfo();
         void sendCommand(int8_t no);
 
-        void readDataStream(char* buffer, int bufferSize = 256, unsigned long timeout = 5000);
-        void readDataStream2(char* buffer, int bufferSize = 256, unsigned long timeout = 5000);
+        void readDataStream(char* buffer, int bufferSize = BUFFER_SIZE, unsigned long timeout = 5000);
+        void readDataStream2(char* buffer, int bufferSize = BUFFER_SIZE, unsigned long timeout = 5000);
 
         void send_receive();
 
@@ -59,7 +63,9 @@ class BatteryManager
         // private memver functions
 
         //
-        void clearBufferStream();
+        void clearStream();
+        void clearBuffer(char *buffer, int bufferSize);
+        void printBuffer(char* buffer, int bufferSize); 
 
         /**
          * getActualVoltage - Converts the input voltage to actual voltage in float.
@@ -80,7 +86,7 @@ class BatteryManager
         // Member variables
         // Add member variables as needed
 		Stream *dataStream;
-        char dataStreamBuffer[256];
+        char dataStreamBuffer[BUFFER_SIZE];
         char* arrayPtr;
         char output_arr_buf[10]; // handle subarray
 
