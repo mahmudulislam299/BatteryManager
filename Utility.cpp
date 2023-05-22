@@ -18,17 +18,17 @@ bool extractSubarray(const char* input, int startPos, int size, char* output)
     return false; // Return false for invalid input
   }
 
-  // Check if the starting position is valid
-  if (startPos < 0 || startPos >= strlen(input))
-  {
-    return false; // Return false for invalid starting position
-  }
+  // // Check if the starting position is valid
+  // if (startPos < 0 || startPos >= strlen(input))
+  // {
+  //   return false; // Return false for invalid starting position
+  // }
 
-  // Check if the size is valid
-  if (size <= 0 || startPos + size > strlen(input))
-  {
-    return false; // Return false for invalid size
-  }
+  // // Check if the size is valid
+  // if (size <= 0 || startPos + size > strlen(input))
+  // {
+  //   return false; // Return false for invalid size
+  // }
 
   // Extract the subarray
   int j = 0;
@@ -38,8 +38,8 @@ bool extractSubarray(const char* input, int startPos, int size, char* output)
   }
   output[j] = '\0'; // Null-terminate the output array
 
-	// Serial.print("output hex: ");
-	// Serial.println(output);
+	Serial.print("output hex: ");
+	Serial.println(output);
 
   return true; // Return true for successful extraction
 }
@@ -49,6 +49,7 @@ int32_t hexToDecimal(const char* hexString)
   // Check if the input string is empty or NULL
   if (hexString == NULL || hexString[0] == '\0')
   {
+    Serial.println("invalid hex input");
     return -1; // Return -1 for invalid input
   }
 
