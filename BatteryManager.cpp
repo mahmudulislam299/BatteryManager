@@ -153,8 +153,33 @@ void BatteryManager::dischargeBattery() {
     // Implementation of dischargeBattery()
 }
 
-BatteryStatus BatteryManager::getBatteryStatus() {
-    // Implementation of getBatteryStatus()
+BatteryStatus BatteryManager::getBatteryStatus() 
+{
+
+  batteryStatus.numberOfCells = getNumberOfCell();
+  batteryStatus.numberOfTemperatures = getNumberOfTemperature();
+  
+  for(int i = 0; i < 15; i++)
+  {
+    batteryStatus.cellVoltages[i]= getCellVoltage(i);
+
+    if(i<6)
+    {
+      batteryStatus.temperatureReadings[i] = getTemperatureReading(i);
+    }
+  }
+
+  batteryStatus.packVoltage = getPackVoltage();
+  batteryStatus.packCurrent = getPackCurrent();
+  batteryStatus.remainingCapacity = getRemainingCapacity();
+
+  // TODO: @mahmudulislam299
+  // batteryStatus.fullCapacity = 
+  // batteryStatus.dischargeCycle =
+  // batteryStatus.designCapacity = 
+  // batteryStatus.checksum = 
+
+    return batteryStatus;
    
 }
 
@@ -352,7 +377,7 @@ int8_t BatteryManager::getNumberOfTemperature()
   return num_of_temp;
 }
 
-float BatteryManager::getTemperature(int8_t temperature_serial)
+float BatteryManager::getTemperatureReading(int8_t temperature_serial)
 {
   if (temperature_serial < 1 || temperature_serial > 6)
   {

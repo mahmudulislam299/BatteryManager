@@ -16,8 +16,11 @@ struct BatteryStatus
   float packVoltage;
   float packCurrent;
   float remainingCapacity;
+  float fullCapacity;
+  uint32_t dischargeCycle;
+  float designCapacity;
+  uint16_t checksum;
 };
-
 
 class BatteryManager 
 {
@@ -61,7 +64,7 @@ class BatteryManager
          */
         float getCellVoltage(int8_t cellNumber); 
         int8_t getNumberOfTemperature();
-        float getTemperature(int8_t temperature_serial);
+        float getTemperatureReading(int8_t temperature_serial);
         float getPackCurrent();
         float getPackVoltage();
         float getRemainingCapacity();
