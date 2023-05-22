@@ -21,8 +21,8 @@ class BatteryManager
         void sendCommandToGetAllBatInfo();
         void sendCommand(int8_t no);
 
-        void readDataStream(char* buffer, int bufferSize = BUFFER_SIZE, unsigned long timeout = 5000);
-        void readDataStream2(char* buffer, int bufferSize = BUFFER_SIZE, unsigned long timeout = 5000);
+        void readDataStream(char* buffer, int bufferSize = BUFFER_SIZE, unsigned long timeout = 1000);
+        void readDataStream2(char* buffer, int bufferSize = BUFFER_SIZE, unsigned long timeout = 1000);
 
         void send_receive();
 
