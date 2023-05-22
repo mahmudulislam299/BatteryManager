@@ -153,10 +153,9 @@ void BatteryManager::dischargeBattery() {
     // Implementation of dischargeBattery()
 }
 
-void BatteryManager::getBatteryStatus() {
+BatteryStatus BatteryManager::getBatteryStatus() {
     // Implementation of getBatteryStatus()
-
-		Serial.println("battery ok");
+   
 }
 
 // Implement the remaining member functions here

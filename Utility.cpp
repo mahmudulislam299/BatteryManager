@@ -38,8 +38,8 @@ bool extractSubarray(const char* input, int startPos, int size, char* output)
   }
   output[j] = '\0'; // Null-terminate the output array
 
-	Serial.print("output hex: ");
-	Serial.println(output);
+	// Serial.print("output hex: ");
+	// Serial.println(output);
 
   return true; // Return true for successful extraction
 }

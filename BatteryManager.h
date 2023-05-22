@@ -7,6 +7,18 @@
 #define COMM_TIMEOUT 1000
 
 
+struct BatteryStatus 
+{
+  uint8_t numberOfCells;
+  float cellVoltages[16];
+  uint8_t numberOfTemperatures;
+  float temperatureReadings[6];
+  float packVoltage;
+  float packCurrent;
+  float remainingCapacity;
+};
+
+
 class BatteryManager 
 {
 	public:
@@ -27,7 +39,7 @@ class BatteryManager
         void send_receive();
 
         void dischargeBattery();
-        void getBatteryStatus();
+        BatteryStatus getBatteryStatus();
 
 
         // Add more member functions as needed
@@ -58,6 +70,7 @@ class BatteryManager
 
     public: 
         // public Member variable
+         BatteryStatus batteryStatus;
 
     private:
         // private memver functions
@@ -91,4 +104,7 @@ class BatteryManager
         char output_arr_buf[10]; // handle subarray
 
 };
+
+
+
 #endif // BatteryManager_H
