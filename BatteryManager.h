@@ -57,6 +57,12 @@ class BatteryManager
         float getPackCurrent();
         float getPackVoltage();
         float getRemainingCapacity();
+        float getFullCapacity();
+        float getDesignCapacity();
+        int32_t getDischargeCycle();
+        // TODO:
+        uint32_t calculateChecksum();
+        int32_t getCustomValue();
 
         
 

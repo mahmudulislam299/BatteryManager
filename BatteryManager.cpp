@@ -531,3 +531,75 @@ float BatteryManager::calculateActualCapacity(int32_t input)
   float output = (float)input / CAPACITY_FACTOR;
   return output;
 }
+
+
+float BatteryManager::getFullCapacity()
+{
+  char temp_buf[10];
+  
+  if (!extractSubarray(dataStreamBuffer, FULL_CAPACITY, NUM_BYTE_4, temp_buf))
+  {
+    return -1; // Return -1 if extraction fails or invalid input
+  }
+  
+  int32_t output = hexToDecimal(temp_buf);
+  float full_capacity = calculateActualCapacity(output);
+  #if defined(_DEBUG_)
+  Serial.print("full capacity: ");
+  Serial.println(full_capacity,3);
+  #endif //!_DEBUG_
+
+  return full_capacity;
+}
+
+float BatteryManager::getDesignCapacity()
+{
+  char temp_buf[10];
+  
+  if (!extractSubarray(dataStreamBuffer, DES_CAPACITY, NUM_BYTE_4, temp_buf))
+  {
+    return -1; // Return -1 if extraction fails or invalid input
+  }
+  
+  int32_t output = hexToDecimal(temp_buf);
+  float design_capacity = calculateActualCapacity(output);
+  #if defined(_DEBUG_)
+  Serial.print("design capacity: ");
+  Serial.println(design_capacity,3);
+  #endif //!_DEBUG_
+
+  return design_capacity;
+}
+
+int32_t BatteryManager::getDischargeCycle()
+{
+  char temp_buf[10];
+  
+  if (!extractSubarray(dataStreamBuffer, DIS_CYCLE, NUM_BYTE_4, temp_buf))
+  {
+    return -1; // Return -1 if extraction fails or invalid input
+  }
+  
+  int32_t output = hexToDecimal(temp_buf);
+  //TODO: check this actual value
+  return output;
+}
+
+uint32_t BatteryManager::calculateChecksum()
+{
+  //TODO:
+}
+
+int32_t BatteryManager::getCustomValue()
+{
+  char temp_buf[10];
+  
+  if (!extractSubarray(dataStreamBuffer, CUSTOM, NUM_BYTE_4, temp_buf))
+  {
+    return -1; // Return -1 if extraction fails or invalid input
+  }
+  
+  int32_t output = hexToDecimal(temp_buf);
+  //TODO: check this actual value
+  return output;
+}
