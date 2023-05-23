@@ -116,17 +116,13 @@ void BatteryManager::readDataStream(char* buffer, int bufferSize, unsigned long 
   Serial.println(" ");
 }
 
-// TODO: function name should be changed
+// TODO: function name should be changeds
 void BatteryManager::send_receive()
 {
   sendCommand(2);
   clearBuffer(dataStreamBuffer,BUFFER_SIZE);
   printBuffer(dataStreamBuffer,BUFFER_SIZE);
   readDataStream(dataStreamBuffer,BUFFER_SIZE,500);
-}
-
-void BatteryManager::dischargeBattery() {
-    // Implementation of dischargeBattery()
 }
 
 BatteryStatus BatteryManager::getBatteryStatus() 
@@ -357,7 +353,7 @@ float BatteryManager::getCellVoltage(int8_t cellNumber)
   int32_t outputDigit = hexToDecimal(cell_vol_buf);
 
   // Calculate the actual voltage based on the decimal value
-  float actualVoltage = getActualVoltage(outputDigit);
+  float actualVoltage = calculateActualVoltage(outputDigit);
   
   #if defined(_DEBUG_)
   // Print the decimal value for debugging purposes
@@ -371,7 +367,7 @@ float BatteryManager::getCellVoltage(int8_t cellNumber)
 }
 
 /**
- * getActualVoltage - Converts the input voltage to actual voltage in float.
+ * calculateActualVoltage - Converts the input voltage to actual voltage in float.
  * 
  * This function takes an input voltage as an integer value and converts it to
  * the actual voltage in float by dividing it by the voltage factor. The voltage
@@ -380,7 +376,7 @@ float BatteryManager::getCellVoltage(int8_t cellNumber)
  * @param input The input voltage as an integer value.
  * @return The actual voltage in float.
  */
-float BatteryManager::getActualVoltage(int32_t input)
+float BatteryManager::calculateActualVoltage(int32_t input)
 {
   // Convert the input voltage to actual voltage by dividing it by the voltage factor
   float output = (float)input / VOLTAGE_FACTOR;
@@ -439,8 +435,8 @@ float BatteryManager::getTemperatureReading(int8_t temperature_serial)
   int32_t outputDigit = hexToDecimal(temp_buf);
 
   // Calculate the actual voltage based on the decimal value
-  // float actualVoltage = getActualVoltage(outputDigit);
-  float actualTemp = getActualTemperature(outputDigit);
+  // float actualVoltage = calculateActualVoltage(outputDigit);
+  float actualTemp = calculateActualTemperature(outputDigit);
   
   #if defined(_DEBUG_)
   // Print the decimal value for debugging purposes
@@ -453,7 +449,7 @@ float BatteryManager::getTemperatureReading(int8_t temperature_serial)
   return actualTemp; // Return the voltage of the specified cell as a decimal value
 }
 
-float BatteryManager::getActualTemperature(int32_t input)
+float BatteryManager::calculateActualTemperature(int32_t input)
 {
   
   float output = ((float)input - TEMPERATURE_FACTOR_1) / TEMPERATURE_FACTOR_2;  
@@ -475,9 +471,8 @@ float BatteryManager::getPackCurrent()
   
   int32_t output = hexToDecimal(temp_buf);
   
-  // TODO: get actual current
 
-  float pack_current = output;
+  float pack_current = calculateActualCurrent(output);
   #if defined(_DEBUG_)
   Serial.print("pack Current: ");
   Serial.println(pack_current);
@@ -496,7 +491,7 @@ float BatteryManager::getPackVoltage()
   }
   
   int32_t output = hexToDecimal(temp_buf);
-  float pack_voltage = getActualVoltage(output);
+  float pack_voltage = calculateActualVoltage(output);
   #if defined(_DEBUG_)
   Serial.print("pack Voltage: ");
   Serial.println(pack_voltage,3);
@@ -516,12 +511,23 @@ float BatteryManager::getRemainingCapacity()
   }
   
   int32_t output = hexToDecimal(temp_buf);
-  // TODO: get actual capacity value()
-  float remain_capacity = output;
+  float remain_capacity = calculateActualCapacity(output);
   #if defined(_DEBUG_)
   Serial.print("remain capacity: ");
   Serial.println(remain_capacity,3);
   #endif //!_DEBUG_
 
   return remain_capacity;
+}
+
+float BatteryManager::calculateActualCurrent(int32_t input)
+{
+  float output = (float)input / CURRENT_FACTOR;
+  return output;
+}
+
+float BatteryManager::calculateActualCapacity(int32_t input)
+{
+  float output = (float)input / CAPACITY_FACTOR;
+  return output;
 }

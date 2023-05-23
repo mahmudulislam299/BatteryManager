@@ -40,8 +40,6 @@ class BatteryManager
 
         void send_receive();
 
-        void dischargeBattery();
-
         BatteryStatus getBatteryStatus();
         void printBatteryStatus(BatteryStatus& batteryStatus);
 
@@ -53,16 +51,6 @@ class BatteryManager
 
 
         int8_t getNumberOfCell();
-
-        /**
-         * getCellVoltage - Retrieves the voltage of a specific cell in the battery pack.
-         * 
-         * This function takes the cell number as input and returns the voltage of the corresponding cell
-         * in the battery pack. The cell number should be within the range of 1 to 15.
-         * 
-         * @param cellNumber  The number of the cell to retrieve the voltage for.
-         * @return The voltage of the specified cell, or -1 if the cell number is invalid or extraction fails.
-         */
         float getCellVoltage(int8_t cellNumber); 
         int8_t getNumberOfTemperature();
         float getTemperatureReading(int8_t temperature_serial);
@@ -85,7 +73,7 @@ class BatteryManager
         void printBuffer(char* buffer, int bufferSize); 
 
         /**
-         * getActualVoltage - Converts the input voltage to actual voltage in float.
+         * calculateActualVoltage - Converts the input voltage to actual voltage in float.
          * 
          * This function takes an input voltage as an integer value and converts it to
          * the actual voltage in float by dividing it by the voltage factor. The voltage
@@ -94,8 +82,10 @@ class BatteryManager
          * @param input The input voltage as an integer value.
          * @return The actual voltage in float.
          */
-        float getActualVoltage(int32_t input);
-        float getActualTemperature(int32_t input);
+        float calculateActualVoltage(int32_t input);
+        float calculateActualTemperature(int32_t input);
+        float calculateActualCurrent(int32_t input);
+        float calculateActualCapacity(int32_t input);
         
 
 
