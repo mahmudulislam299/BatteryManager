@@ -2,6 +2,7 @@
 #include "BatteryCommand.h"
 #include "Utility.h"
 
+#define _DEBUG_
 
 // Constructor(s)
 BatteryManager::BatteryManager(Stream *port) 
@@ -161,38 +162,40 @@ BatteryStatus BatteryManager::getBatteryStatus()
 
 void BatteryManager::printBatteryStatus(BatteryStatus& batteryStatus) 
 {
+  int i, j;
   Serial.println("Battery Status:");
   Serial.print("Number of Cells: ");
   Serial.println(batteryStatus.numberOfCells);
 
   Serial.println("Cell Voltages:");
-  for (int i = 1; i < 16; i++) 
+  for (i = 1; i < 16; i++) 
   {
     Serial.print("Cell ");
     Serial.print(i);
     Serial.print(": ");
-    Serial.println(batteryStatus.cellVoltages[i]);
+    Serial.println((batteryStatus.cellVoltages[i]),3);
   }
 
   Serial.print("Number of Temperatures: ");
   Serial.println(batteryStatus.numberOfTemperatures);
 
   Serial.println("Temperature Readings:");
-  for (int i = 1; i < 6; i++) {
+  for (j = 1; j < 7; j++) 
+  {
     Serial.print("Temperature ");
-    Serial.print(i);
+    Serial.print(j);
     Serial.print(": ");
-    Serial.println(batteryStatus.temperatureReadings[i]);
+    Serial.println((batteryStatus.temperatureReadings[j]),3);
   }
 
   Serial.print("Pack Voltage: ");
-  Serial.println(batteryStatus.packVoltage);
+  Serial.println(batteryStatus.packVoltage,3);
   Serial.print("Pack Current: ");
-  Serial.println(batteryStatus.packCurrent);
+  Serial.println(batteryStatus.packCurrent,3);
   Serial.print("Remaining Capacity: ");
-  Serial.println(batteryStatus.remainingCapacity);
+  Serial.println(batteryStatus.remainingCapacity,3);
   Serial.print("Full Capacity: ");
-  Serial.println(batteryStatus.fullCapacity);
+  Serial.println(batteryStatus.fullCapacity,3);
   Serial.print("Discharge Cycle: ");
   Serial.println(batteryStatus.dischargeCycle);
   Serial.print("Design Capacity: ");
@@ -314,8 +317,10 @@ int8_t BatteryManager::getNumberOfCell()
   }
   
   int8_t num_of_cell = hexToDecimal(temp_buf);
+  #if defined(_DEBUG_)
   Serial.print("number of cell: ");
   Serial.println(num_of_cell);
+  #endif //!_DEBUG_
 
   return num_of_cell;
 }
@@ -333,7 +338,9 @@ float BatteryManager::getCellVoltage(int8_t cellNumber)
 {
   if (cellNumber < 1 || cellNumber > 16)
   {
+    #if defined(_DEBUG_)
     Serial.println("invalid cell number");
+    #endif //!_DEBUG_
     return -1; // Return -1 for invalid cell number
   }
   
@@ -352,11 +359,13 @@ float BatteryManager::getCellVoltage(int8_t cellNumber)
   // Calculate the actual voltage based on the decimal value
   float actualVoltage = getActualVoltage(outputDigit);
   
+  #if defined(_DEBUG_)
   // Print the decimal value for debugging purposes
   Serial.print("Cell ");
   Serial.print(cellNumber);
   Serial.print(" Voltage = ");
   Serial.println(actualVoltage,3);
+  #endif //!_DEBUG_
 
   return actualVoltage; // Return the voltage of the specified cell as a decimal value
 }
@@ -385,13 +394,18 @@ int8_t BatteryManager::getNumberOfTemperature()
   
   if (!extractSubarray(dataStreamBuffer, NUM_TEM, NUM_BYTE_2, temp_buf))
   {
+    #if defined(_DEBUG_)
     Serial.println("failed to get number of temperature");
+    #endif //!_DEBUG_
     return -1; // Return -1 if extraction fails or invalid input
+
   }
   
   int8_t num_of_temp = hexToDecimal(temp_buf);
+  #if defined(_DEBUG_)
   Serial.print("number of temp: ");
   Serial.println(num_of_temp);
+  #endif //!_DEBUG_
 
   return num_of_temp;
 }
@@ -400,7 +414,10 @@ float BatteryManager::getTemperatureReading(int8_t temperature_serial)
 {
   if (temperature_serial < 1 || temperature_serial > 6)
   {
+    #if defined(_DEBUG_)
     Serial.println("invalid temperature serial");
+    #endif //!_DEBUG_
+
     return -1; // Return -1 for invalid temperature number
   }
   
@@ -410,8 +427,11 @@ float BatteryManager::getTemperatureReading(int8_t temperature_serial)
   // Extract the subarray representing the voltage of the specified cell
   if (!extractSubarray(dataStreamBuffer, startPos, NUM_BYTE_4, temp_buf))
   {
+    #if defined(_DEBUG_)
     Serial.print("failed to get temperature");
     Serial.println(temperature_serial);
+    #endif //!_DEBUG_
+
     return -1; // Return -1 if extraction fails or invalid input
   }
   
@@ -422,11 +442,13 @@ float BatteryManager::getTemperatureReading(int8_t temperature_serial)
   // float actualVoltage = getActualVoltage(outputDigit);
   float actualTemp = getActualTemperature(outputDigit);
   
+  #if defined(_DEBUG_)
   // Print the decimal value for debugging purposes
   Serial.print("Temperature ");
   Serial.print(temperature_serial);
   Serial.print(" = ");
   Serial.println(actualTemp,3);
+  #endif //!_DEBUG_
 
   return actualTemp; // Return the voltage of the specified cell as a decimal value
 }
@@ -445,7 +467,9 @@ float BatteryManager::getPackCurrent()
   
   if (!extractSubarray(dataStreamBuffer, PACK_CURRENT, NUM_BYTE_4, temp_buf))
   {
+    #if defined(_DEBUG_)
     Serial.println("failed to get pack current");
+    #endif //!_DEBUG_
     return -1; // Return -1 if extraction fails or invalid input
   }
   
@@ -454,8 +478,10 @@ float BatteryManager::getPackCurrent()
   // TODO: get actual current
 
   float pack_current = output;
+  #if defined(_DEBUG_)
   Serial.print("pack Current: ");
   Serial.println(pack_current);
+  #endif //!_DEBUG_
 
   return pack_current;
 }
@@ -471,8 +497,10 @@ float BatteryManager::getPackVoltage()
   
   int32_t output = hexToDecimal(temp_buf);
   float pack_voltage = getActualVoltage(output);
+  #if defined(_DEBUG_)
   Serial.print("pack Voltage: ");
   Serial.println(pack_voltage,3);
+  #endif //!_DEBUG_
 
   return pack_voltage;
 }
@@ -490,8 +518,10 @@ float BatteryManager::getRemainingCapacity()
   int32_t output = hexToDecimal(temp_buf);
   // TODO: get actual capacity value()
   float remain_capacity = output;
+  #if defined(_DEBUG_)
   Serial.print("remain capacity: ");
   Serial.println(remain_capacity,3);
+  #endif //!_DEBUG_
 
   return remain_capacity;
 }
