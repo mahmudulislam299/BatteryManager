@@ -117,9 +117,9 @@ void BatteryManager::readDataStream(char* buffer, int bufferSize, unsigned long 
 }
 
 // TODO: function name should be changeds
-void BatteryManager::send_receive()
+void BatteryManager::send_receive(uint8_t queryNo)
 {
-  sendCommand(2);
+  sendCommand(queryNo);
   clearBuffer(dataStreamBuffer,BUFFER_SIZE);
   printBuffer(dataStreamBuffer,BUFFER_SIZE);
   readDataStream(dataStreamBuffer,BUFFER_SIZE,500);
@@ -145,11 +145,10 @@ BatteryStatus BatteryManager::getBatteryStatus()
   batteryStatus.packVoltage = getPackVoltage();
   batteryStatus.packCurrent = getPackCurrent();
   batteryStatus.remainingCapacity = getRemainingCapacity();
-
+  batteryStatus.fullCapacity = getFullCapacity();
+  batteryStatus.designCapacity = getDesignCapacity();
+  batteryStatus.dischargeCycle = getDischargeCycle();
   // TODO: @mahmudulislam299
-  // batteryStatus.fullCapacity = 
-  // batteryStatus.dischargeCycle =
-  // batteryStatus.designCapacity = 
   // batteryStatus.checksum = 
 
     return batteryStatus;

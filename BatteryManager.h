@@ -38,7 +38,7 @@ class BatteryManager
 
         void readDataStream(char* buffer, int bufferSize = BUFFER_SIZE, unsigned long timeout = 1000);
 
-        void send_receive();
+        void send_receive(uint8_t queryNo);
 
         BatteryStatus getBatteryStatus();
         void printBatteryStatus(BatteryStatus& batteryStatus);
